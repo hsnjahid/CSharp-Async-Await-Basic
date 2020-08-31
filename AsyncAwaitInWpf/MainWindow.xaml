@@ -5,30 +5,41 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AsyncAwaitInWpf"
         mc:Ignorable="d"
-        Title="Async and await"
-        Height="300" Width="400"
+        Title="Async and await" Width="600" Height="450" 
         ResizeMode="NoResize">
-  
-  <Window.Resources>
-    <Style TargetType="{x:Type Button}">
-      <Setter Property="Width" Value="150"/>
-      <Setter Property="Height" Value="50"/>
-      <Setter Property="Margin" Value="0,5"/>
-    </Style>
-  </Window.Resources>
-  
-  <StackPanel>
-    <Button Content="Normal Handler Button !!!" 
-            Click="OnButtonClickChangeTextNormally"/>
-    <Button Content="Threaded Handler Button !!!" 
-            Click="OnButtonClickChangeTextThreaded"/>
-    <Button Content="Awaited Handler Button !!!" 
-            Click="OnButtonClickChangeTextAwaited"/>
-    <TextBlock x:Name="DisplayTextBlock" 
-               Height="50" 
-               Margin="5,20,5,5" 
+
+  <DockPanel LastChildFill="True" Margin="10">
+    <!--Resources-->
+    <DockPanel.Resources>
+      <Style TargetType="{x:Type Button}">
+        <Setter Property="Margin" Value="0,0,0,10"/>
+        <Setter Property="Height" Value="50"/>
+        <Setter Property="BorderBrush" Value="DarkCyan"/>
+        <Setter Property="TextBlock.Foreground" Value="OrangeRed"/>
+        <Setter Property="TextBlock.FontWeight" Value="SemiBold"/>
+      </Style>
+    </DockPanel.Resources>
+
+    <!--BUTTON 1-->
+    <Button DockPanel.Dock="Top"
+            Content="Handle by Main Thread" 
+            Click="OnButtonClickHandleByMainThread"/>
+    <!--BUTTON 2-->
+    <Button DockPanel.Dock="Top"
+            Content="Handle by Worker Thread" 
+            Click="OnButtonClickHandleByWorkerThread"/>
+    <!--BUTTON 3-->
+    <Button DockPanel.Dock="Top"
+            Content="Handle by Task Async-Await"
+            Click="OnButtonClickHandleByAsyncAwait"/>
+    <!--BUTTON 3-->
+    <Button DockPanel.Dock="Top"
+            Content="Handle by nasted Task Async-Await"
+            Click="OnButtonClickHandleByNestedAsyncAwait"/>
+    <!--LOGGING-->
+    <TextBlock x:Name="LoggingTextBlock" 
                TextAlignment="Center"
-               TextBlock.FontSize="20"
+               TextBlock.FontSize="15"
                Foreground="Blue"/>
-  </StackPanel>
+  </DockPanel>
 </Window>
