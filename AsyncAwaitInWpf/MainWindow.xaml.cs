@@ -10,23 +10,11 @@ namespace AsyncAwaitInWpf
   /// <summary>
   /// Interaction logic for MainWindow.xaml
   /// </summary>
-  public partial class MainWindow : Window, INotifyPropertyChanged
+  public partial class MainWindow : Window
   {
-    /// <summary>
-    /// Gets current thread Id
-    /// </summary>
-    public bool _isContinueOnCapturedContext = true;
-
-    public bool IsConfigureAwaitTask { get; set; }
-    public bool IsConfigureAwaitNesedTask { get; set; }
-    public bool IsConfigureAwaitDelayTask { get; set; }
-
-    public event PropertyChangedEventHandler PropertyChanged;
-
-    public void OnPropertyChanged(string name)
-    {
-      PropertyChanged(this, new PropertyChangedEventArgs(name));
-    }
+    public bool IsConfigureAwaitCallingTask { get; set; } = true;
+    public bool IsConfigureAwaitNesedTask { get; set; } = true;
+    public bool IsConfigureAwaitDelayTask { get; set; } = true;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="MainWindow"/> class.
@@ -35,22 +23,6 @@ namespace AsyncAwaitInWpf
     {
       InitializeComponent();
       DataContext = this;
-    }
-
-    /// <summary>
-    /// On checked
-    /// </summary>am>
-    private void ConfigureAwait_Checked(object sender, RoutedEventArgs e)
-    {
-      _isContinueOnCapturedContext = true;
-    }
-
-    /// <summary>
-    /// On unchecked
-    /// </summary>
-    private void ConfigureAwait_Unchecked(object sender, RoutedEventArgs e)
-    {
-      _isContinueOnCapturedContext = false;
     }
 
     /// <summary>
@@ -92,7 +64,7 @@ namespace AsyncAwaitInWpf
 
       Log("Before parent task");
       // await
-      await DoSomethingAsync();
+      await DoSomethingAsync().ConfigureAwait(IsConfigureAwaitCallingTask);
 
       Log("After parent task");
 
@@ -109,7 +81,7 @@ namespace AsyncAwaitInWpf
 
       Log("Before parent task");
       // await
-      await DoSomethingNestedAsync();
+      await DoSomethingNestedAsync().ConfigureAwait(IsConfigureAwaitCallingTask);
 
       Log("After parent task");
 
@@ -134,7 +106,7 @@ namespace AsyncAwaitInWpf
       {
         Log("Inside task");
         // await
-        await DoSomethingAsync();
+        await DoSomethingAsync().ConfigureAwait(IsConfigureAwaitNesedTask);
 
         Log("Exiting task");
       }).ConfigureAwait(IsConfigureAwaitNesedTask);
@@ -206,7 +178,5 @@ namespace AsyncAwaitInWpf
         LoggingTextBlock.Text += logMsg;
       }
     }
-
-
   }
 }

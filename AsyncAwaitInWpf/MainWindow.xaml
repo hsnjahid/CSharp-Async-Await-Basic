@@ -3,7 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:AsyncAwaitInWpf"
         mc:Ignorable="d"
         Title="Async and await" Width="800" Height="600" 
         ResizeMode="NoResize">
@@ -27,25 +26,18 @@
     <Button DockPanel.Dock="Top"
             Content="Handle by Worker Thread" 
             Click="OnButtonClickHandleByWorkerThread"/>
+    <!--CHECKBOXS : Configure Await-->
     <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
       <StackPanel.Resources>
         <Style TargetType="CheckBox">
-          <Setter Property="Margin" Value="5,0"/>
+          <Setter Property="Margin" Value="10,0,0,5"/>
         </Style>
       </StackPanel.Resources>
-      <TextBlock Text="Configure Await"/>
-      <CheckBox DockPanel.Dock="Top" Content="Parent Task" IsChecked="{Binding IsConfigureAwaitTask}"/>
-      <CheckBox DockPanel.Dock="Top" Content="Nested Task" IsChecked="{Binding IsConfigureAwaitNesedTask}"/>
-      <CheckBox DockPanel.Dock="Top" Content="Delay Task" IsChecked="{Binding IsConfigureAwaitDelayTask}"/>
+      <TextBlock Text="Configure Await" Foreground="SteelBlue" FontWeight="Medium"/>
+      <CheckBox Content="Parent Task" IsChecked="{Binding IsConfigureAwaitCallingTask}"/>
+      <CheckBox Content="Nested Task" IsChecked="{Binding IsConfigureAwaitNesedTask}"/>
+      <CheckBox Content="Delay Task" IsChecked="{Binding IsConfigureAwaitDelayTask}"/>
     </StackPanel>
-    <!--CHECKBOX : Configure Await-->
-    <CheckBox x:Name="ConfigureAwait"
-              DockPanel.Dock="Top"
-              Margin="0,0,0,10"
-              Content="Configure Await"
-              IsChecked="True"
-              Checked="ConfigureAwait_Checked" 
-              Unchecked="ConfigureAwait_Unchecked"/>
     <!--BUTTON 3-->
     <Button DockPanel.Dock="Top"
             Content="Handle by Task Async-Await"
