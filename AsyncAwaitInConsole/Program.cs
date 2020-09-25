@@ -20,6 +20,7 @@ namespace AsyncAwaitInConsole
       Thread.Sleep(4000);
       Console.WriteLine("------------------------------------------");
 
+      Console.WriteLine(Environment.NewLine);
       // ---------- Task -----------
       Log("Before new task");
       await DoSomethingAsync();

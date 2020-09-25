@@ -20,42 +20,55 @@
     </DockPanel.Resources>
     <!--BUTTON 1-->
     <Button DockPanel.Dock="Top"
-            Content="Handle by Main Thread" 
+            Content="Main Thread" 
             Click="OnButtonClickHandleByMainThread"/>
     <!--BUTTON 2-->
     <Button DockPanel.Dock="Top"
-            Content="Handle by Worker Thread" 
+            Content="Worker Thread" 
             Click="OnButtonClickHandleByWorkerThread"/>
     <!--CHECKBOXS : Configure Await-->
     <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
       <StackPanel.Resources>
         <Style TargetType="CheckBox">
-          <Setter Property="Margin" Value="10,0,0,5"/>
+          <Setter Property="Margin" Value="10,5,0,5"/>
         </Style>
       </StackPanel.Resources>
-      <TextBlock Text="Configure Await" Foreground="SteelBlue" FontWeight="Medium"/>
+      <TextBlock Text="Configure Await @" Margin="0,5" Foreground="SteelBlue" FontWeight="Medium" />
+      <CheckBox Content="Parent Task" IsChecked="{Binding IsConfigureAwaitCallingTask}"/>
+      <CheckBox Content="Delay Task" IsChecked="{Binding IsConfigureAwaitDelayTask}"/>
+      <Separator Background="SteelBlue" Margin="10,5" Padding="0,5" Width="2" 
+                 Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}"/>
       <CheckBox Content="Parent Task" IsChecked="{Binding IsConfigureAwaitCallingTask}"/>
       <CheckBox Content="Nested Task" IsChecked="{Binding IsConfigureAwaitNesedTask}"/>
-      <CheckBox Content="Delay Task" IsChecked="{Binding IsConfigureAwaitDelayTask}"/>
+      <CheckBox Content="Child Task" IsChecked="{Binding IsConfigureAwaitChildTask}"/>
     </StackPanel>
     <!--BUTTON 3-->
     <Button DockPanel.Dock="Top"
-            Content="Handle by Task Async-Await"
+            Content="Task Async-Await"
             Click="OnButtonClickHandleByAsyncAwait"/>
-    <!--BUTTON 3-->
+    <!--BUTTON 4-->
     <Button DockPanel.Dock="Top"
-            Content="Handle by nasted Task Async-Await"
+            Content="Nested Task Async-Await"
             Click="OnButtonClickHandleByNestedAsyncAwait"/>
-    <!--BUTTON 3-->
+    <!--BUTTON 5-->
+    <Button DockPanel.Dock="Top"
+            Content="Awaited Async method from class library"
+            Click="OnButtonClickAwaitLibAsyncMethod"/>
+    <!--BUTTON 6-->
     <Button DockPanel.Dock="Top"
             Content="Deadlock"
             Click="OnButtonClickProduceDeadlock"/>
     <!--LOGGING-->
     <Border x:Name="LoggingBorder" BorderThickness="1">
-      <TextBlock x:Name="LoggingTextBlock"
+      <Grid>
+        <TextBlock x:Name="LoggingTextBlock"
                  TextAlignment="Center"
                  TextBlock.FontSize="12"
                  Foreground="Blue"/>
+        <TextBlock x:Name="TextBlock_Counter" 
+                   HorizontalAlignment="Center" VerticalAlignment="Center"
+                   FontSize="64" FontWeight="ExtraBold" Opacity="0.2"/>
+      </Grid>
     </Border>
   </DockPanel>
 </Window>

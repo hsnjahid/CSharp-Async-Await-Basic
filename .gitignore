@@ -5,3 +5,5 @@
 /.vs/AsyncAwaitSample/v15
 /AsyncAwaitInConsole
 /AsyncAwaitInWpf
+/AsyncAwaitInLibrary/bin/Debug
+/AsyncAwaitInLibrary/obj/Debug

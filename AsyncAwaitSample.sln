@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AsyncAwaitInConsole", "Asyn
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AsyncAwaitInWpf", "AsyncAwaitInWpf\AsyncAwaitInWpf.csproj", "{83224FD5-4682-4C96-9FB1-E140D58B21B4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AsyncAwaitInLibrary", "AsyncAwaitInLibrary\AsyncAwaitInLibrary.csproj", "{B4581568-4276-4D92-AA0F-B1177CF6CACB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{83224FD5-4682-4C96-9FB1-E140D58B21B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{83224FD5-4682-4C96-9FB1-E140D58B21B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{83224FD5-4682-4C96-9FB1-E140D58B21B4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B4581568-4276-4D92-AA0F-B1177CF6CACB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B4581568-4276-4D92-AA0F-B1177CF6CACB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B4581568-4276-4D92-AA0F-B1177CF6CACB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B4581568-4276-4D92-AA0F-B1177CF6CACB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
