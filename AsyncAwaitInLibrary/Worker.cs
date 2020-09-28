@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -9,7 +6,7 @@ namespace AsyncAwaitInLibrary
 {
   public class Worker : IWorker
   {
-    public async Task DoSomethingAsync()
+    async Task IWorker.DoSomethingAsync()
     {
       await Task.Run(() =>
       {
@@ -17,14 +14,14 @@ namespace AsyncAwaitInLibrary
       }).ConfigureAwait(false);
     }
 
-    public async Task<int> GetRandomNumberAsync()
+    async Task<int> IWorker.GetRandomNumberAsync()
     {
-      int num = 999; 
+      int num = int.MaxValue; 
       await Task.Run(() =>
       {
-        Thread.Sleep(5000);
-        // get a random number between 90K to 99.9K
-        num = new Random().Next(90000, 99999);
+        // get a random number between 3K to 5K
+        num = new Random().Next(3000, 5000);
+        Thread.Sleep(num);
       }).ConfigureAwait(false);
 
       return num;

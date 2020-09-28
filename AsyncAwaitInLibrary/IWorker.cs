@@ -1,20 +1,8 @@
-﻿// <copyright>
-// Technical Software Engineering Plazotta 2020
-// </copyright>
-//
-// <author>
-// TSEP / Hossain
-// </author>
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace AsyncAwaitInLibrary
 {
-  interface IWorker
+  public interface IWorker
   {
     /// <summary>
     /// Do some async work

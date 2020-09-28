@@ -32,7 +32,7 @@ namespace AsyncAwaitInConsole
     }
 
     /// <summary>
-    /// Delays 3s
+    /// Wait for 3 seconds
     /// </summary>
     static void DoSomething()
     {
@@ -42,7 +42,7 @@ namespace AsyncAwaitInConsole
     }
 
     /// <summary>
-    /// Delays 3s then change text
+    /// Wait for 3 seconds asynchronous.
     /// </summary>
     static async Task DoSomethingAsync()
     {

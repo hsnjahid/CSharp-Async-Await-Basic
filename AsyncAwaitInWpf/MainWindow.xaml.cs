@@ -95,22 +95,24 @@ namespace AsyncAwaitInWpf
       TryChangeBorderBrush();
     }
 
+    /// <summary>
+    /// Start a new task and wait until a random number is received.
+    /// </summary>
     private async void OnButtonClickAwaitLibAsyncMethod(object sender, RoutedEventArgs e)
     {
-      var worker = new AsyncAwaitInLibrary.Worker();
+      AsyncAwaitInLibrary.IWorker worker = new AsyncAwaitInLibrary.Worker();
       Log("Before DoSomethingAsync method from class lib");
       await Task.Run(async ()=>
       {
-        Log("Inside task");
+        Log("Inside task | will wait 5 seconds");
         await worker.DoSomethingAsync();
-        Log("Now try to get a random number");
+        Log("Now try to wait a random delay");
         var num = await worker.GetRandomNumberAsync();
-        Log($"Returned number = '{num}'");
+        Log($"Awaited '{num}' ms");
         Log("Exiting task...");
       });
 
       Log("After DoSomethingAsync method...");
-
       TryChangeBorderBrush();
     }
 
