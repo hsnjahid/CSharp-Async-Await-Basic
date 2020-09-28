@@ -7,11 +7,15 @@ Very basic example of async and await at
   
 Console application
 ===================
-Program flow of multi-threaded application.
+Program flow and drawback of a multi-threaded application. How to fix it using Task based asynchronous operation.
+
+Class Library
+=============
+How to use async method at Interfaces. The best practice of using ConfigureAwait at a class library.
 
 WPF Application
 ===============
-How to handle responsive ui. Basic uses of Task.ConfigureAwait.
+How to handle responsive user interface by using asynchronous operation, fundamental use of Task.ConfigureAwait.
 
   
 
