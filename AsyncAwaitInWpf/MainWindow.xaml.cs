@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -205,6 +206,24 @@ namespace AsyncAwaitInWpf
       }
     }
 
+    private async void OnButtonClickRunProgress(object sender, RoutedEventArgs e)
+    {
+      var progress = new Progress<int>(value =>
+      {
+        WorkerProgressBar.Value = value;
+      });
 
+      await Task.Run(() => LoopThroughNumbers(500, progress));
+    }
+
+    private void LoopThroughNumbers(int count, IProgress<int> progress)
+    {
+      Enumerable.Range(1, count).ToList().ForEach(idx =>
+      {
+        Thread.Sleep(10);
+        var parcentageComplete = (idx * 100) / count;
+        progress.Report(parcentageComplete);
+      });
+    }
   }
 }

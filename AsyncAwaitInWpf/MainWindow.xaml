@@ -58,6 +58,11 @@
     <Button DockPanel.Dock="Top"
             Content="Deadlock"
             Click="OnButtonClickProduceDeadlock"/>
+    <!--PROGRESS BAR-->
+    <DockPanel DockPanel.Dock="Top" Margin="0,0,0,10">
+      <Button DockPanel.Dock="Right" Content="Start" Margin="10,0,0,0" Width="50" Click="OnButtonClickRunProgress"/>
+      <ProgressBar x:Name="WorkerProgressBar" DockPanel.Dock="Left" />
+    </DockPanel>
     <!--LOGGING-->
     <Border x:Name="LoggingBorder" BorderThickness="1">
       <Grid>
