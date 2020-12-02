@@ -3,9 +3,11 @@
 ################################################################################
 
 /.vs/AsyncAwaitSample/v15
-/AsyncAwaitInConsole
-/AsyncAwaitInWpf
-/AsyncAwaitInLibrary/bin/Debug
-/AsyncAwaitInLibrary/obj/Debug
-/AsyncAwaitWithMVVM/bin/Debug
-/AsyncAwaitWithMVVM/obj/Debug
+/AsyncAwait.Console/bin/Debug
+/AsyncAwait.Console/obj/Debug
+/AsyncAwait.Library/obj/Debug
+/AsyncAwait.Library/bin/Debug
+/AsyncAwait.MVVM/obj/Debug
+/AsyncAwait.MVVM/bin/Debug
+/AsyncAwait.Wpf/obj/Debug
+/AsyncAwait.Wpf/bin/Debug

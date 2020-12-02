@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace AsyncAwaitWithMVVM
+namespace AsyncAwait.MVVM
 {
   /// <summary>
   /// This class represents a basic command that runs an action

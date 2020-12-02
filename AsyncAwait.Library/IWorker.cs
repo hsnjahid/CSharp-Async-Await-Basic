@@ -1,11 +1,11 @@
 ﻿using System.Threading.Tasks;
 
-namespace AsyncAwaitInLibrary
+namespace AsyncAwait.Lib
 {
   public interface IWorker
   {
     /// <summary>
-    /// Do some async work
+    /// Do some work async.
     /// </summary>
     Task DoSomethingAsync();
 

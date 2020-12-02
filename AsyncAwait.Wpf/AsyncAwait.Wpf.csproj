@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{7207620E-F8BF-40B3-BE2D-FD7EE7258D32}</ProjectGuid>
+    <ProjectGuid>{83224FD5-4682-4C96-9FB1-E140D58B21B4}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>AsyncAwaitWithMVVM</RootNamespace>
-    <AssemblyName>AsyncAwaitWithMVVM</AssemblyName>
+    <RootNamespace>AsyncAwait.Wpf</RootNamespace>
+    <AssemblyName>AsyncAwait.Wpf</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -55,16 +55,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="CircularBusyIndicator.xaml.cs">
-      <DependentUpon>CircularBusyIndicator.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="MainWindowViewModel.cs" />
-    <Compile Include="RelayCommand.cs" />
-    <Compile Include="ViewModelBase.cs" />
-    <Page Include="CircularBusyIndicator.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -105,9 +95,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\AsyncAwaitInLibrary\AsyncAwaitInLibrary.csproj">
+    <ProjectReference Include="..\AsyncAwait.Library\AsyncAwait.Library.csproj">
       <Project>{b4581568-4276-4d92-aa0f-b1177cf6cacb}</Project>
-      <Name>AsyncAwaitInLibrary</Name>
+      <Name>AsyncAwait.Library</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

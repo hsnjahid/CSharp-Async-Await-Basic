@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace AsyncAwaitInConsole
+namespace AsyncAwait.Con
 {
   class Program
   {
@@ -17,44 +17,38 @@ namespace AsyncAwaitInConsole
       Log("After new thread");
       
       // wait for separate output
-      Thread.Sleep(4000);
+      Thread.Sleep(1200);
       Console.WriteLine("------------------------------------------");
 
-      Console.WriteLine(Environment.NewLine);
       // ---------- Task -----------
       Log("Before new task");
       await DoSomethingAsync();
       Log("After new task");
+
 
       Console.WriteLine("------------------------------------------");
       Log("Application exiting....");
       Console.ReadLine();
     }
 
-    /// <summary>
-    /// Wait for 3 seconds
-    /// </summary>
-    static void DoSomething()
+    // Wait by blocking calling thread.
+    private static void DoSomething()
     {
-      Log("Inside worker thread, waits for 3 seconds");
-      Thread.Sleep(3000);
+      Log("Inside worker thread, waits for a second");
+      Thread.Sleep(1000);
       Log("Exiting worker thread");
     }
 
-    /// <summary>
-    /// Wait for 3 seconds asynchronous.
-    /// </summary>
-    static async Task DoSomethingAsync()
+    // Wait asynchronously without blocking calling thread.
+    private static async Task DoSomethingAsync()
     {
-      Log("Inside task, waits for 3 seconds");
-      await Task.Delay(3000);
+      Log("Inside task, waits for a second");
+      await Task.Delay(1000);
       Log("Exiting task");
     }
 
-    /// <summary>
-    /// Log message to console
-    /// </summary>
-    static void Log(string message)
+    // Log message to console
+    private static void Log(string message)
     {
       var logMsg = string.Format("{0} | Current Thread : [{1}]",
         message, Thread.CurrentThread.ManagedThreadId);

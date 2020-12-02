@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace AsyncAwaitInLibrary
+namespace AsyncAwait.Lib
 {
   public class Worker : IWorker
   {
@@ -10,7 +10,7 @@ namespace AsyncAwaitInLibrary
     {
       await Task.Run(() =>
       {
-        Thread.Sleep(5000);
+        Thread.Sleep(1000);
       }).ConfigureAwait(false);
     }
 

@@ -1,7 +1,6 @@
-﻿<Application x:Class="AsyncAwaitInWpf.App"
+﻿<Application x:Class="AsyncAwait.Wpf.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:AsyncAwaitInWpf"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
          

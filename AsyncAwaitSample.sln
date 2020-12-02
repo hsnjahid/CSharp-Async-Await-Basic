@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.1022
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AsyncAwaitInConsole", "AsyncAwaitInConsole\AsyncAwaitInConsole.csproj", "{DA8F3E7D-79FB-4005-8340-64EA3DCF174D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AsyncAwait.Console", "AsyncAwait.Console\AsyncAwait.Console.csproj", "{DA8F3E7D-79FB-4005-8340-64EA3DCF174D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AsyncAwaitInWpf", "AsyncAwaitInWpf\AsyncAwaitInWpf.csproj", "{83224FD5-4682-4C96-9FB1-E140D58B21B4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AsyncAwait.Wpf", "AsyncAwait.Wpf\AsyncAwait.Wpf.csproj", "{83224FD5-4682-4C96-9FB1-E140D58B21B4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AsyncAwaitInLibrary", "AsyncAwaitInLibrary\AsyncAwaitInLibrary.csproj", "{B4581568-4276-4D92-AA0F-B1177CF6CACB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AsyncAwait.Library", "AsyncAwait.Library\AsyncAwait.Library.csproj", "{B4581568-4276-4D92-AA0F-B1177CF6CACB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AsyncAwaitWithMVVM", "AsyncAwaitWithMVVM\AsyncAwaitWithMVVM.csproj", "{7207620E-F8BF-40B3-BE2D-FD7EE7258D32}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AsyncAwait.MVVM", "AsyncAwait.MVVM\AsyncAwait.MVVM.csproj", "{7207620E-F8BF-40B3-BE2D-FD7EE7258D32}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

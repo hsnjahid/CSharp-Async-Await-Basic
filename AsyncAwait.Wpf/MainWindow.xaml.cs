@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -7,7 +6,7 @@ using System.Windows;
 using System.Windows.Media;
 using System.Windows.Threading;
 
-namespace AsyncAwaitInWpf
+namespace AsyncAwait.Wpf
 {
   /// <summary>
   /// Interaction logic for MainWindow.xaml
@@ -15,6 +14,7 @@ namespace AsyncAwaitInWpf
   public partial class MainWindow : Window
   {
     private DispatcherTimer _timer = new DispatcherTimer();
+    private CancellationTokenSource _tokenSource = null;
     public bool IsConfigureAwaitCallingTask { get; set; } = true;
     public bool IsConfigureAwaitNesedTask { get; set; } = true;
     public bool IsConfigureAwaitDelayTask { get; set; } = true;
@@ -101,7 +101,7 @@ namespace AsyncAwaitInWpf
     /// </summary>
     private async void OnButtonClickAwaitLibAsyncMethod(object sender, RoutedEventArgs e)
     {
-      AsyncAwaitInLibrary.IWorker worker = new AsyncAwaitInLibrary.Worker();
+      AsyncAwait.Lib.IWorker worker = new AsyncAwait.Lib.Worker();
       Log("Before DoSomethingAsync method from class lib");
       await Task.Run(async ()=>
       {
@@ -208,22 +208,47 @@ namespace AsyncAwaitInWpf
 
     private async void OnButtonClickRunProgress(object sender, RoutedEventArgs e)
     {
+      _tokenSource = new CancellationTokenSource();
+
+      var token = _tokenSource.Token;
+
       var progress = new Progress<int>(value =>
       {
         WorkerProgressBar.Value = value;
+        WorkerProgressText.Text = $"{value}%";
       });
 
-      await Task.Run(() => LoopThroughNumbers(500, progress));
+      try
+      {
+        await Task.Run(() => LoopThroughNumbers(500, progress, token));
+      }
+      catch(OperationCanceledException)
+      {
+        WorkerProgressText.Text = "Canelled";
+      }
+      finally
+      {
+        _tokenSource.Dispose();
+      }
     }
 
-    private void LoopThroughNumbers(int count, IProgress<int> progress)
+    private void LoopThroughNumbers(int count, IProgress<int> progress, CancellationToken token)
     {
       Enumerable.Range(1, count).ToList().ForEach(idx =>
       {
         Thread.Sleep(10);
         var parcentageComplete = (idx * 100) / count;
         progress.Report(parcentageComplete);
+        if(token.IsCancellationRequested)
+        {
+          token.ThrowIfCancellationRequested();
+        }
       });
+    }
+
+    private void OnButtonClickStopProgress(object sender, RoutedEventArgs e)
+    {
+      _tokenSource?.Cancel();
     }
   }
 }

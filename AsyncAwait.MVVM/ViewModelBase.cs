@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace AsyncAwaitWithMVVM
+namespace AsyncAwait.MVVM
 {
   /// <summary>
   /// This class represents a base view model that fires property changed events.
