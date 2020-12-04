@@ -14,7 +14,7 @@ namespace AsyncAwait.Lib
       }).ConfigureAwait(false);
     }
 
-    async Task<int> IWorker.GetRandomNumberAsync()
+    async Task<int> IWorker.GetNumberAsync()
     {
       int num = int.MaxValue; 
       await Task.Run(() =>

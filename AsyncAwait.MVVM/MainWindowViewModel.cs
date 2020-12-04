@@ -35,7 +35,7 @@ namespace AsyncAwait.MVVM
       {
         IsBusy = true;
         OnPropertyChanged(nameof(IsBusy));
-        Number =  await Worker.GetRandomNumberAsync();
+        Number =  await Worker.GetNumberAsync();
         OnPropertyChanged(nameof(Number));
         IsBusy = false;
         OnPropertyChanged(nameof(IsBusy));

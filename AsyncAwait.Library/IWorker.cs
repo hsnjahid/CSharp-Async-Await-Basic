@@ -12,6 +12,6 @@ namespace AsyncAwait.Lib
     /// <summary>
     /// Return a random number async.
     /// </summary>
-    Task<int> GetRandomNumberAsync();
+    Task<int> GetNumberAsync();
   }
 }

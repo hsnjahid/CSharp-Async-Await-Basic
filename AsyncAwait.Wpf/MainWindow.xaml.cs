@@ -13,200 +13,166 @@ namespace AsyncAwait.Wpf
   /// </summary>
   public partial class MainWindow : Window
   {
+    #region Fields
     private DispatcherTimer _timer = new DispatcherTimer();
     private CancellationTokenSource _tokenSource = null;
-    public bool IsConfigureAwaitCallingTask { get; set; } = true;
-    public bool IsConfigureAwaitNesedTask { get; set; } = true;
-    public bool IsConfigureAwaitDelayTask { get; set; } = true;
-    public bool IsConfigureAwaitChildTask { get; set; } = true;
+    #endregion
+
+    #region Properties
+    public bool IsConfigureAwaitForParent { get; set; } = true;
+    public bool IsConfigureAwaitForChild { get; set; } = false;
     public int Count { get; private set; }
+    #endregion
 
     /// <summary>
     /// Initializes a new instance of the <see cref="MainWindow"/> class.
     /// </summary>
     public MainWindow()
     {
+      InitializeComponent();
       _timer.Interval = TimeSpan.FromSeconds(1);
       _timer.Tick += (sender, e) => TextBlock_Counter.Text = Count++.ToString();
       _timer.Start();
-
-      InitializeComponent();
       DataContext = this;
     }
 
-    /// <summary>
-    /// Blocks main thread than show log message.
-    /// </summary>
-    private void OnButtonClickHandleByMainThread(object sender, RoutedEventArgs e)
+    #region Button Handlers
+    // blocks main thread than show log message.
+    private void ButtonMainHandled_Click(object sender, RoutedEventArgs e)
     {
       Reset(); // clear and reset
-      Log("App froze for 5 seconds and border changed to Cyan.");
+      Log("App froze for 5 seconds and border brush changed.");
       Thread.Sleep(TimeSpan.FromSeconds(5));
-      TryChangeBorderBrush();
+      TryChangeLoggingPane();
     }
 
-    /// <summary>
-    /// Starts new thread which delays logging is interactive (does not block gui thread)
-    /// </summary>
-    private void OnButtonClickHandleByWorkerThread(object sender, RoutedEventArgs e)
+    // starts new thread which delays logging is interactive (does not block gui thread)
+    private void ButtonWorkerHandled_Click(object sender, RoutedEventArgs e)
     {
       Reset(); // clear and reset
       Log("Before worker thread");
       // start new thread
       new Thread(() =>
       {
-        Log("Inside worker thread, wait for 5 seconds, then border changed to Cyan | gui shall be interactive");
+        Log("Inside worker thread -> wait for 5 seconds, then try to change border brush --> App remains interactive");
         Thread.Sleep(TimeSpan.FromSeconds(5));
-        TryChangeBorderBrush();
+        TryChangeLoggingPane();
         Log("Leaving worker thread...");
       }).Start();
 
-      Log("After worker thread | does not wait for worker to finish");
+      Log("After worker thread -> does not wait for worker to finish");
     }
 
-    /// <summary>
-    /// Start new task and asynchronous work (does not block gui thread)
-    /// </summary>
-    private async void OnButtonClickHandleByAsyncAwait(object sender, RoutedEventArgs e)
+    // starts a new task and do asynchronous work (does not block gui thread)
+    private async void ButtonTaskHandled_ClickAsync(object sender, RoutedEventArgs e)
     {
       Reset(); // clear and reset
 
       Log("Before async method");
-      // await
-      await DoSomethingAsync().ConfigureAwait(IsConfigureAwaitCallingTask);
-
+      await DoSomethingAsync().ConfigureAwait(IsConfigureAwaitForParent); // await
       Log("After async method...");
 
-      TryChangeBorderBrush();
+      TryChangeLoggingPane();
     }
 
-    /// <summary>
-    /// Start nested tasks and asynchronous work (does not block gui thread)
-    /// </summary>
-    private async void OnButtonClickHandleByNestedAsyncAwait(object sender, RoutedEventArgs e)
+    // start a new task and wait until a random number is received.
+    private async void ButtonClassLibHandled_ClickAsync(object sender, RoutedEventArgs e)
     {
-      Reset(); // clear and reset
-
-      Log("Before nested async method");
-      // await
-      await DoSomethingNestedAsync().ConfigureAwait(IsConfigureAwaitCallingTask);
-
-      Log("After nested async method...");
-
-      TryChangeBorderBrush();
-    }
-
-    /// <summary>
-    /// Start a new task and wait until a random number is received.
-    /// </summary>
-    private async void OnButtonClickAwaitLibAsyncMethod(object sender, RoutedEventArgs e)
-    {
+      Reset();
+      // create worker 
       AsyncAwait.Lib.IWorker worker = new AsyncAwait.Lib.Worker();
-      Log("Before DoSomethingAsync method from class lib");
-      await Task.Run(async ()=>
-      {
-        Log("Inside task | will wait 5 seconds");
-        await worker.DoSomethingAsync();
-        Log("Now try to wait a random delay");
-        var num = await worker.GetRandomNumberAsync();
-        Log($"Awaited '{num}' ms");
-        Log("Exiting task...");
-      });
 
-      Log("After DoSomethingAsync method...");
-      TryChangeBorderBrush();
+      Log("Before new task.");
+      await Task.Run(async () =>
+      {
+        Log("Before async method from class library.");
+        await worker.DoSomethingAsync();
+        Log("After async method, now try to get a random number");
+        var num = await worker.GetNumberAsync();
+        Log($"Required '{num}' ms to get the value");
+      });
+      Log("After the task.");
+      TryChangeLoggingPane();
     }
 
-    /// <summary>
-    /// Produce dead lock.
-    /// </summary>
-    private void OnButtonClickProduceDeadlock(object sender, RoutedEventArgs e)
+    // produce dead lock.
+    private void ButtonDeadlock_Click(object sender, RoutedEventArgs e)
     {
       Log("Before dead lock set ConfigureAwait to false");
       var task = DoSomethingAsync();
       Log("Main thread wait to finish task");
       task.Wait();
     }
+    #endregion
 
-    // Do something asynchronously | nested task
-    private async Task DoSomethingNestedAsync()
-    {
-      Log("Inside DoSomethingNestedAsync() method which runs synchronously | start new task");
-      // new task await
-      await Task.Run(async () =>
-      {
-        Log("Inside parent task");
-
-        await Task.Run(() =>
-        {
-          Log("Inside child task will wait 5 seconds ");
-          Thread.Sleep(TimeSpan.FromSeconds(5));
-          Log("Exiting child task...");
-        }).ConfigureAwait(IsConfigureAwaitChildTask);
-        Log("Exiting parent task......");
-      }).ConfigureAwait(IsConfigureAwaitNesedTask);
-    }
-
-    // Do something asynchronous
+    // delay calling thread for five seconds asynchronous
     private async Task DoSomethingAsync()
     {
-      Log("Inside DoSomethingAsync() method runs synchronously| start new task will wait 5 seconds | gui shall be interactive");
-      await Task.Delay(TimeSpan.FromSeconds(5)).ConfigureAwait(IsConfigureAwaitDelayTask);
-      Log("After async delay | apeared after 5 seconds");
+      Log("Inside async method -> runs on calling thread, starts new task will wait five seconds -> App remains interactive");
+      await Task.Delay(TimeSpan.FromSeconds(5)).ConfigureAwait(IsConfigureAwaitForChild);
+      Log("After async task delay -> waited five seconds");
     }
 
-    // Clean logging text and reset border brush to white
+    // reset logging pane
     private void Reset()
     {
       // clear and reset
-      LoggingTextBlock.Text = string.Empty;
-      LoggingTextBlock.Background = Brushes.White;
-      LoggingBorder.BorderBrush = Brushes.White;
+      Border_Logging.BorderBrush = Brushes.White;
+      TextBlock_Logging.Background = Brushes.White;
+      TextBlock_Logging.Text = string.Empty;
     }
 
-    // Try to change boder color of the logging text block. 
-    private void TryChangeBorderBrush()
+    // try to change border color and background of the logging text block.
+    private void TryChangeLoggingPane()
     {
       try
       {
-        LoggingTextBlock.Background = Brushes.LightGoldenrodYellow;
-        LoggingBorder.BorderBrush = Brushes.DarkCyan;
+        TextBlock_Logging.Background = Brushes.LightGoldenrodYellow;
+        Border_Logging.BorderBrush = Brushes.DarkCyan;
       }
       catch (Exception ex)
       {
-        Log($"Error on changing background {Environment.NewLine}{ex.Message}", isError: true);
+        Log($"Error on changing logging pane \'{ex.Message}\'", isError: true);
       }
     }
 
-    // Entry log message.
+    // log a message.
     private void Log(string message, bool isError = false, int? givenId = null)
     {
-      var logMsg = string.Format("{0}{1} [ {2} - {3}]",
+      // message
+      var logMsg = string.Format("{0}{1} [{2}][{3}]",
         Environment.NewLine,
         message,
-        givenId ?? Thread.CurrentThread.ManagedThreadId,
-        Thread.CurrentThread.IsBackground? "Background" : "Foreground"
+        Thread.CurrentThread.IsBackground ? "B" : "F",
+        givenId ?? Thread.CurrentThread.ManagedThreadId
         );
 
       // display message in GUI thread
-      bool isInGuiThread = Application.Current.Dispatcher == System.Windows.Threading.Dispatcher.CurrentDispatcher;
+      bool isGuiThread = Application.Current.Dispatcher == Dispatcher.CurrentDispatcher;
 
-      if (!isInGuiThread)
+      if (!isGuiThread)
       {
         Application.Current.Dispatcher.Invoke(new Action(() =>
         {
-          LoggingTextBlock.Text += logMsg;
-          if(isError)
-            LoggingBorder.BorderBrush = Brushes.OrangeRed;
+          TextBlock_Logging.Text += logMsg;
+
+          // change border brush in error case
+          if (isError)
+          {
+            TextBlock_Logging.Background = Brushes.LightPink;
+            Border_Logging.BorderBrush = Brushes.OrangeRed;
+          }
         }));
       }
       else
       {
-        LoggingTextBlock.Text += logMsg;
+        TextBlock_Logging.Text += logMsg;
       }
     }
 
-    private async void OnButtonClickRunProgress(object sender, RoutedEventArgs e)
+    #region IProgress
+    // start a new async task and report running progress
+    private async void ButtonStart_Click(object sender, RoutedEventArgs e)
     {
       _tokenSource = new CancellationTokenSource();
 
@@ -214,17 +180,17 @@ namespace AsyncAwait.Wpf
 
       var progress = new Progress<int>(value =>
       {
-        WorkerProgressBar.Value = value;
-        WorkerProgressText.Text = $"{value}%";
+        ProgressBar_Worker.Value = value;
+        TextBlock_Progress.Text = $"{value}%";
       });
 
       try
       {
         await Task.Run(() => LoopThroughNumbers(500, progress, token));
       }
-      catch(OperationCanceledException)
+      catch (OperationCanceledException)
       {
-        WorkerProgressText.Text = "Canelled";
+        TextBlock_Progress.Text = "Canelled";
       }
       finally
       {
@@ -232,6 +198,16 @@ namespace AsyncAwait.Wpf
       }
     }
 
+    // cancel running task
+    private void ButtonCancel_Click(object sender, RoutedEventArgs e)
+    {
+      if (_tokenSource != null)
+      {
+        _tokenSource.Cancel();
+      }
+    }
+
+    // loop throgh numbers and wait in each iteration
     private void LoopThroughNumbers(int count, IProgress<int> progress, CancellationToken token)
     {
       Enumerable.Range(1, count).ToList().ForEach(idx =>
@@ -239,16 +215,14 @@ namespace AsyncAwait.Wpf
         Thread.Sleep(10);
         var parcentageComplete = (idx * 100) / count;
         progress.Report(parcentageComplete);
-        if(token.IsCancellationRequested)
+
+        // check in each iteration
+        if (token.IsCancellationRequested)
         {
           token.ThrowIfCancellationRequested();
         }
       });
     }
-
-    private void OnButtonClickStopProgress(object sender, RoutedEventArgs e)
-    {
-      _tokenSource?.Cancel();
-    }
+    #endregion
   }
 }

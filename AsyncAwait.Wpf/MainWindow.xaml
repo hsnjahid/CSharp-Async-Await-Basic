@@ -4,82 +4,96 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="Async and await" Width="800" Height="600" 
-        ResizeMode="NoResize">
+        Title="Task demo with async and await"
+        Width="800" Height="600">
 
-  <DockPanel LastChildFill="True" Margin="10">
-    <!--Resources-->
-    <DockPanel.Resources>
-      <Style TargetType="{x:Type Button}">
-        <Setter Property="Margin" Value="0,0,0,10"/>
-        <Setter Property="Height" Value="45"/>
-        <Setter Property="BorderBrush" Value="DarkCyan"/>
-        <Setter Property="TextBlock.Foreground" Value="OrangeRed"/>
-        <Setter Property="TextBlock.FontWeight" Value="SemiBold"/>
-      </Style>
-    </DockPanel.Resources>
-    <!--BUTTON 1-->
-    <Button DockPanel.Dock="Top"
-            Content="Main Thread" 
-            Click="OnButtonClickHandleByMainThread"/>
-    <!--BUTTON 2-->
-    <Button DockPanel.Dock="Top"
-            Content="Worker Thread" 
-            Click="OnButtonClickHandleByWorkerThread"/>
-    <!--CHECKBOXS : Configure Await-->
-    <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
-      <StackPanel.Resources>
-        <Style TargetType="CheckBox">
-          <Setter Property="Margin" Value="10,5,0,5"/>
-        </Style>
-      </StackPanel.Resources>
-      <TextBlock Text="Configure Await @" Margin="0,5" Foreground="SteelBlue" FontWeight="Medium" />
-      <CheckBox Content="Parent Task" IsChecked="{Binding IsConfigureAwaitCallingTask}"/>
-      <CheckBox Content="Delay Task" IsChecked="{Binding IsConfigureAwaitDelayTask}"/>
-      <Separator Background="SteelBlue" Margin="10,5" Padding="0,5" Width="2" 
-                 Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}"/>
-      <CheckBox Content="Parent Task" IsChecked="{Binding IsConfigureAwaitCallingTask}"/>
-      <CheckBox Content="Nested Task" IsChecked="{Binding IsConfigureAwaitNesedTask}"/>
-      <CheckBox Content="Child Task" IsChecked="{Binding IsConfigureAwaitChildTask}"/>
-    </StackPanel>
-    <!--BUTTON 3-->
-    <Button DockPanel.Dock="Top"
-            Content="Task Async-Await"
-            Click="OnButtonClickHandleByAsyncAwait"/>
-    <!--BUTTON 4-->
-    <Button DockPanel.Dock="Top"
-            Content="Nested Task Async-Await"
-            Click="OnButtonClickHandleByNestedAsyncAwait"/>
-    <!--BUTTON 5-->
-    <Button DockPanel.Dock="Top"
-            Content="Awaited Async method from class library"
-            Click="OnButtonClickAwaitLibAsyncMethod"/>
-    <!--BUTTON 6-->
-    <Button DockPanel.Dock="Top"
-            Content="Deadlock"
-            Click="OnButtonClickProduceDeadlock"/>
-    <!--PROGRESS BAR-->
-    <DockPanel DockPanel.Dock="Top" Margin="0,0,0,10">
-      <Button DockPanel.Dock="Right" Content="Cancel" Margin="10,0,0,0" Width="50" Click="OnButtonClickStopProgress"/>
-      <Button DockPanel.Dock="Right" Content="Start" Margin="10,0,0,0" Width="50" Click="OnButtonClickRunProgress"/>
-      <Grid  DockPanel.Dock="Left">
-        <ProgressBar x:Name="WorkerProgressBar"/>
-        <TextBlock x:Name="WorkerProgressText" 
-                   Padding="10,0,0,0" VerticalAlignment="Center"
-                   FontWeight="ExtraLight" FontSize="20" Foreground="LightGreen"/>
-      </Grid>
-    </DockPanel>
-    <!--LOGGING-->
-    <Border x:Name="LoggingBorder" BorderThickness="1">
+  <Window.Resources>
+
+    <!--BUTTON STYLE-->
+    <Style TargetType="{x:Type Button}">
+      <Setter Property="Margin" Value="5"/>
+      <Setter Property="Height" Value="40"/>
+      <Setter Property="BorderBrush" Value="DarkCyan"/>
+      <Setter Property="TextBlock.Foreground" Value="OrangeRed"/>
+      <Setter Property="TextBlock.FontWeight" Value="SemiBold"/>
+    </Style>
+
+    <!--CHECKBOX STYLE-->
+    <Style TargetType="{x:Type CheckBox}">
+      <Setter Property="Margin" Value="5"/>
+      <Setter Property="BorderBrush" Value="CornflowerBlue"/>
+      <Setter Property="BorderThickness" Value="2"/>
+      <Setter Property="TextBlock.FontWeight" Value="SemiBold"/>
+    </Style>
+  </Window.Resources>
+
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="*"/>
+      <RowDefinition Height="Auto"/>
+    </Grid.RowDefinitions>
+
+    <!-- L O G G I N G     P A N E -->
+    <Border x:Name="Border_Logging" BorderThickness="1" Margin="5">
       <Grid>
-        <TextBlock x:Name="LoggingTextBlock"
-                 TextAlignment="Center"
-                 TextBlock.FontSize="12"
-                 Foreground="Blue"/>
-        <TextBlock x:Name="TextBlock_Counter" 
-                   HorizontalAlignment="Center" VerticalAlignment="Center"
+        <TextBlock x:Name="TextBlock_Logging" 
+                   TextAlignment="Center" FontSize="12" Foreground="Blue"/>
+        <TextBlock x:Name="TextBlock_Counter" Text="0" Margin="0,0,20,0"
+                   HorizontalAlignment="Right" VerticalAlignment="Top"
                    FontSize="64" FontWeight="ExtraBold" Opacity="0.2"/>
       </Grid>
     </Border>
-  </DockPanel>
+
+    <!-- A C T I O N     B U T T O N S -->
+    <StackPanel Grid.Row="1">
+
+      <!-- BUTTON MAIN -->
+      <Button Content="Main Handled"
+              Click="ButtonMainHandled_Click"/>
+
+      <!-- BUTTON WORKER -->
+      <Button Content="Worker Handled"
+              Click="ButtonWorkerHandled_Click"/>
+
+      <!--BUTTON TASK-->
+      <Button Content="Task Handled"
+              ToolTip="Right click to set ConfigureAwait"
+              Click="ButtonTaskHandled_ClickAsync">
+
+        <Button.ContextMenu>
+          <ContextMenu>
+            <StackPanel>
+              <TextBlock Margin="5" Foreground="SteelBlue" FontWeight="Medium"
+                         Text="Configure Await @"/>
+              <CheckBox Content="Parent Task"
+                        IsChecked="{Binding IsConfigureAwaitForParent}"/>
+              <CheckBox Content="Child Task"
+                        IsChecked="{Binding IsConfigureAwaitForChild}"/>
+            </StackPanel>
+          </ContextMenu>
+        </Button.ContextMenu>
+      </Button>
+
+      <!--BUTTON TASK FROM CLS LIB-->
+      <Button Content=".NET Lib Handled"
+              Click="ButtonClassLibHandled_ClickAsync"/>
+      
+      <!--BUTTON 6-->
+      <Button Content="Deadlock"
+              Click="ButtonDeadlock_Click"/>
+      
+      <!-- PROGRESS REPORT -->
+      <DockPanel>
+        <Button DockPanel.Dock="Right" Content="Cancel" Width="50" Click="ButtonCancel_Click"/>
+        <Button DockPanel.Dock="Right" Content="Start" Width="50" Click="ButtonStart_Click"/>
+        <Grid DockPanel.Dock="Left" Margin="5">
+          <!-- PROGRESS-->
+          <ProgressBar x:Name="ProgressBar_Worker"/>
+          <!-- PROGRESS TEXT-->
+          <TextBlock x:Name="TextBlock_Progress" Padding="5,0,0,0" VerticalAlignment="Center"
+                     FontWeight="ExtraLight" FontSize="20" Foreground="LightGreen"/>
+        </Grid>
+      </DockPanel>
+    </StackPanel>
+  </Grid>
 </Window>
